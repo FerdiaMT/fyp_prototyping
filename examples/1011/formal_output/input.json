@@ -1,0 +1,12 @@
+{
+  "top_module": "RefModule",
+  "clock": "clk",
+  "reset": {
+    "name": "rst",
+    "active_level": 0,
+    "cycles": 1
+  },
+  "inputs": ["data"],
+  "outputs": ["flag"],
+  "model_step": "model_step"
+}

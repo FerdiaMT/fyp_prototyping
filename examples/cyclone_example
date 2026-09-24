@@ -1,0 +1,64 @@
+machine SequenceDetector1011 {
+
+    bool flag;
+    start normal state S0_f0 {
+        flag = false;
+    }
+
+    normal state S1_f0 {
+        flag = false;
+    }
+
+    normal state S2_f0 {
+        flag = false;
+    }
+
+    normal state S3_f0 {
+        flag = false;
+    }
+
+    // The sequence 1011 has just been recognised internally
+    // flag is still 0 till next cycle
+    normal state S4_f0 {
+        flag = false;
+    }
+
+    // flag is now set
+    normal state S1_f1 {
+        flag = true;
+    }
+
+    normal state S2_f1 {
+        flag = true;
+    }
+
+    // state transition depends on : 
+    // - current state 
+    // - current flag 
+    // - input (the on "x")
+    transition t00 { S0_f0 -> S0_f0 on "0" }
+    transition t01 { S0_f0 -> S1_f0 on "1" }
+
+    transition t10 { S1_f0 -> S2_f0 on "0" }
+    transition t11 { S1_f0 -> S1_f0 on "1" }
+
+    transition t20 { S2_f0 -> S0_f0 on "0" }
+    transition t21 { S2_f0 -> S3_f0 on "1" }
+
+    transition t30 { S3_f0 -> S2_f0 on "0" }
+    transition t31 { S3_f0 -> S4_f0 on "1" }
+
+    transition t40 { S4_f0 -> S2_f1 on "0" }
+    transition t41 { S4_f0 -> S1_f1 on "1" }
+
+    transition t10_flag { S1_f1 -> S2_f0 on "0" }
+    transition t11_flag { S1_f1 -> S1_f0 on "1" }
+
+    transition t20_flag { S2_f1 -> S0_f0 on "0" }
+    transition t21_flag { S2_f1 -> S3_f0 on "1" }
+
+    goal {
+        // high flag reached examples, how many reachable in 5
+        enumerate for 5 reach (S1_f1, S2_f1)
+    }
+}
